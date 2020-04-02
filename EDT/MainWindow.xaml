@@ -5,8 +5,8 @@
     <Grid>
 
 
-        <TreeView Margin="25,4,27.333,27.667" RenderTransformOrigin="0.513,0.315">
-            <ComboBox Name="cbx_ENV"  HorizontalAlignment="Left" Height="29" Margin="25" Width="159" SelectionChanged="Cbx_ENV_SelectionChanged">
+        <TreeView Margin="25,30,27.333,33.667" RenderTransformOrigin="0.513,0.315">
+            <ComboBox Name="cbx_ENV"  HorizontalAlignment="Left" Height="29" Margin="25" Width="159"  DropDownClosed="Cbx_ENV_DropDownClosed" DropDownOpened="Cbx_ENV_DropDownOpened" >
                 <ListBoxItem Content="Production"/>
                 <ListBoxItem Content="Pre-Prod"/>
                 <ListBoxItem Content="UAT"/>
@@ -38,7 +38,6 @@
                     <TreeViewItem.Header>
                         <TextBlock Text="History" Foreground="Blue" Name="History_UI_txtbx"/>
                     </TreeViewItem.Header>
-                    <ListBox Margin="0,-11,0,-141" Width="122"/>
                 </TreeViewItem>
             </TreeViewItem>
             <TreeViewItem IsExpanded="True">
@@ -90,13 +89,24 @@
 
 
         </TreeView>
-        <Button Content="Run" Name="Validate" HorizontalAlignment="Left" Margin="245,36,0,0" VerticalAlignment="Top" Width="75" Click="Validate_Click" />
+        <Button Content="Run" Name="Validate" HorizontalAlignment="Left" Margin="245,62,0,0" VerticalAlignment="Top" Width="75" Click="Validate_Click" />
         <ProgressBar Name="pbMain" Margin="421,37,27.333,611.667"></ProgressBar>
-        <ListBox RenderTransformOrigin="2.067,-0.56" Margin="385,79,47.333,174.667">
 
-        </ListBox>
 
-        <Button Name="logLbx" Content="View log" Margin="390,248,53.333,151.667"/>
+        <Grid>
+            <TabControl Margin="292,112,0,96.667" RenderTransformOrigin="0.37,0.509" HorizontalAlignment="Left" Width="177">
+                <TabItem Header="XE Servers">
+                    <ListBox RenderTransformOrigin="2.067,-0.56" Margin="10,21,10.333,19" Name="logLbx"/>
+                </TabItem>
+                <TabItem Header="History Servers" >
+                    <ListBox RenderTransformOrigin="2.067,-0.56" Margin="10,21,10.333,19" Name="logLbxHist"/>
+
+                </TabItem>
+            </TabControl>
+        </Grid>
+
+
+        <Button Name="logBtn" Content="View log" Margin="352,334,91.333,56.667" RenderTransformOrigin="0.527,5.849"/>
 
 
     </Grid>

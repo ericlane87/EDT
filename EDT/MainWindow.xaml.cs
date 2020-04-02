@@ -46,7 +46,20 @@ namespace EDT
             bool userInterface_history = CheckUI(PrimaryUI_Address_histroy, Secoundary_Address_history);
 
             CreatUIThread_History(userInterface_history);
-            ActiiveMQValidation(Enviroment); 
+            ActiiveMQValidation(Enviroment);
+
+
+
+
+
+
+
+            List<string> servers = new List<string>();
+            servers.Add("VA22PWVEGM311");
+            servers.Add("VA22PWVEGM312");
+            servers.Add("VA22PWVEGM313");
+
+            logLbx.DataContext = servers;
 
         }
 
@@ -261,9 +274,64 @@ namespace EDT
 
         }
 
-        private void Cbx_ENV_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Cbx_ENV_DropDownClosed(object sender, EventArgs e)
         {
+            if (cbx_ENV.Text.ToString() == "Production")
+            {
+                List<string> logs_production = new List<string>();
+            logs_production.Add("XE Servers:");
+           
+                logs_production.Add("VA22PWVEGM311");
+            logs_production.Add("VA22PWVEGM312");
+            logs_production.Add("VA22PWVEGM313");
 
+                logs_production.Add("Service Manager:");
+                logs_production.Add("VA22PWVEGM309");
+                logs_production.Add("VA22PWVEGM310");
+
+                        
+                List<string> logs_productionHistory = new List<string>();
+                logs_productionHistory.Add("XE Servers:");
+
+                logs_productionHistory.Add("VA22PWVEGM350");
+                logs_productionHistory.Add("VA22PWVEGM351");
+                logs_productionHistory.Add("VA22PWVEGM352");
+
+
+
+                logLbxHist.ItemsSource = logs_productionHistory;
+                logLbx.ItemsSource = logs_production;
+            }
+
+            if(cbx_ENV.Text.ToString() == "Pre-Prod")
+            {
+
+                List<string> logs_PREPROD = new List<string>();
+                logs_PREPROD.Add("XE Servers:");
+
+                logs_PREPROD.Add("VA22PWVEGM304");
+                logs_PREPROD.Add("VA22PWVEGM305");
+                logs_PREPROD.Add("VA22PWVEGM306");
+
+
+
+
+
+
+
+
+
+
+                logLbx.ItemsSource = logs_PREPROD;
+
+
+            }
+        }
+
+        private void Cbx_ENV_DropDownOpened(object sender, EventArgs e)
+        {
+            logLbx.ItemsSource = null;
+            logLbxHist.ItemsSource = null;
         }
     }
 
