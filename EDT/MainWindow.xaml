@@ -3,9 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="EDT" Height="450" Width="550">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="401*"/>
+            <ColumnDefinition Width="142*"/>
+        </Grid.ColumnDefinitions>
 
 
-        <TreeView Margin="25,30,27.333,33.667" RenderTransformOrigin="0.513,0.315">
+        <TreeView Margin="25,30,27.333,33.667" RenderTransformOrigin="0.513,0.315" Grid.ColumnSpan="2">
             <ComboBox Name="cbx_ENV"  HorizontalAlignment="Left" Height="29" Margin="25" Width="159"  DropDownClosed="Cbx_ENV_DropDownClosed" DropDownOpened="Cbx_ENV_DropDownOpened" >
                 <ListBoxItem Content="Production"/>
                 <ListBoxItem Content="Pre-Prod"/>
@@ -43,21 +47,21 @@
             <TreeViewItem IsExpanded="True">
                 <TreeViewItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox IsEnabled="False"></CheckBox>
+                        <CheckBox Name="activeMQcbx" IsEnabled="False"></CheckBox>
                         <TextBlock Text="Active MQ " FontWeight="Bold" />
                     </StackPanel>
                 </TreeViewItem.Header>
                 <TreeViewItem Height="19" Margin="0,0,229.667,0">
                     <TreeViewItem.Header>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="MQ Processing" Foreground="Blue" />
+                            <TextBlock Name="activeMQ_ProcessingTxtbx" Text="MQ Processing" Foreground="Blue" />
 
                         </StackPanel>
                     </TreeViewItem.Header>
                 </TreeViewItem>
                 <TreeViewItem>
                     <TreeViewItem.Header>
-                        <TextBlock Text="MQ History" Foreground="Blue" />
+                        <TextBlock Name="activeMQ_HistoryTxtbx" Text="MQ History" Foreground="Blue" />
                     </TreeViewItem.Header>
                 </TreeViewItem>
             </TreeViewItem>
@@ -65,7 +69,7 @@
                 <TreeViewItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <CheckBox x:Name="UICh" IsEnabled="False"/>
-                        <TextBlock  Text="User Inerface "  FontWeight="Bold"/>
+                        <TextBlock  Text="Datamart MQ "  FontWeight="Bold"/>
                     </StackPanel>
                 </TreeViewItem.Header>
                 <TreeViewItem Margin="0,0,-0.333,0">
@@ -89,16 +93,25 @@
 
 
         </TreeView>
-        <Button Content="Run" Name="Validate" HorizontalAlignment="Left" Margin="245,62,0,0" VerticalAlignment="Top" Width="75" Click="Validate_Click" />
-        <ProgressBar Name="pbMain" Margin="421,37,27.333,611.667"></ProgressBar>
+        <Button Content="Run" Name="Validate" HorizontalAlignment="Left" Margin="245,62,0,0" VerticalAlignment="Top" Width="75" Click="Validate_Click" IsEnabled="False" />
+        <ProgressBar Name="pbMain" Margin="11.667,35,35.333,371.667" Grid.Column="1" RenderTransformOrigin="0.5,0.5">
+            <ProgressBar.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </ProgressBar.RenderTransform>
+        </ProgressBar>
 
 
-        <Grid>
+        <Grid Grid.ColumnSpan="2" Margin="0,0,0.333,-0.333">
             <TabControl Margin="292,112,0,96.667" RenderTransformOrigin="0.37,0.509" HorizontalAlignment="Left" Width="177">
-                <TabItem Header="XE Servers">
-                    <ListBox RenderTransformOrigin="2.067,-0.56" Margin="10,21,10.333,19" Name="logLbx"/>
+                <TabItem Header="Processing ">
+                    <ListBox RenderTransformOrigin="2.067,-0.56" Margin="10,21,10.333,19" Name="logLbx" SelectionChanged="LogLbx_SelectionChanged" />
                 </TabItem>
-                <TabItem Header="History Servers" >
+                <TabItem Header="History " >
                     <ListBox RenderTransformOrigin="2.067,-0.56" Margin="10,21,10.333,19" Name="logLbxHist"/>
 
                 </TabItem>
@@ -106,7 +119,7 @@
         </Grid>
 
 
-        <Button Name="logBtn" Content="View log" Margin="352,334,91.333,56.667" RenderTransformOrigin="0.527,5.849"/>
+        <Button Name="logBtn" IsEnabled="False" Content="View log" Margin="352,334,91.333,56.667" RenderTransformOrigin="0.527,5.849" Grid.ColumnSpan="2" Click="LogBtn_Click"/>
 
 
     </Grid>

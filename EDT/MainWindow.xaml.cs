@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -26,9 +27,15 @@ namespace EDT
         public MainWindow()
         {
             InitializeComponent();
+
+
+
+
         }
 
-        private void Validate_Click(object sender, RoutedEventArgs e)
+       
+
+    private void Validate_Click(object sender, RoutedEventArgs e)
         {
             UserInterface UI_primary = new UserInterface();
             string Enviroment = cbx_ENV.Text;
@@ -69,14 +76,16 @@ namespace EDT
 
             string PrimaryAqAddress = AQ.getPrimaryAQ(env);
             string SecoundaryAqAddress = AQ.getSecoundaryAQ(env);
-
+            string PrimaryAqAddress_History = AQ.getPrimaryAQ_History(env);
+            string SecoundaryAqAddress_History = AQ.getSecoundaryAQ_History(env);
             bool ActiveMQ = CheckUI(PrimaryAqAddress, SecoundaryAqAddress);
-
+            bool ActivMQ_History = CheckUI(PrimaryAqAddress_History, SecoundaryAqAddress_History);
+            CreatUIThread_ActiveMQ(ActiveMQ, ActivMQ_History);
         }
 
         public bool CheckUI(string URL_prim, string URL_secound)
         {
-            if (URL_secound.Contains("NULL"))
+            if (URL_prim.Contains("NULL"))
             {
                 return false;
             }
@@ -85,6 +94,11 @@ namespace EDT
             WebRequest request = WebRequest.Create(URL_prim);
             try
             {
+
+                if (URL_prim.Contains("NULL"))
+                {
+                    return false;
+                }
                 request.Timeout = 1000;
                 request.GetResponse();
 
@@ -115,6 +129,38 @@ namespace EDT
 
                     return false;
                 }
+            }
+
+
+
+        }
+        public void CreatUIThread_ActiveMQ(bool processing, bool history)
+        {
+            try
+            {
+
+
+                {
+                    Thread thread = new Thread(delegate ()
+                    {
+                        updateUserInterface_ActiveMQ(processing,history);
+                    });
+                    thread.IsBackground = true;
+                    thread.Start();
+
+                }
+            }
+
+
+
+
+
+
+
+            catch (Exception ex)//If exception thrown then couldn't get response from address
+            {
+
+                MessageBox.Show(ex.ToString());
             }
 
 
@@ -214,6 +260,77 @@ namespace EDT
         }
 
 
+
+        public void updateUserInterface_ActiveMQ(bool processing, bool history)
+        {
+            Dispatcher.BeginInvoke((Action)(() =>
+            {
+                if (processing == true)
+                {
+                    activeMQ_ProcessingTxtbx.Foreground = new SolidColorBrush(Colors.Green);
+                    activeMQcbx.IsChecked = true;
+
+                }
+                else
+                {
+                    activeMQ_ProcessingTxtbx.Foreground = new SolidColorBrush(Colors.Red);
+                    activeMQcbx.IsChecked = true;
+
+
+                
+                    
+
+                }
+
+
+                if (history == true)
+                {
+                    activeMQ_HistoryTxtbx.Foreground = new SolidColorBrush(Colors.Green);
+                    UIChekbox.IsChecked = true;
+
+                    activeMQ_HistoryTxtbx.Text = "History";
+
+                }
+                else
+                {
+                    activeMQ_HistoryTxtbx.Text = "History";
+
+
+                    activeMQ_HistoryTxtbx.Foreground = new SolidColorBrush(Colors.Red);
+                    UIChekbox.IsChecked = true;
+
+                    List<string> NoHistoryEveiorment = new List<string>();
+                    NoHistoryEveiorment.Add("DEV2");
+                    NoHistoryEveiorment.Add("DEV3");
+                    NoHistoryEveiorment.Add("Pre-Prod");
+                    NoHistoryEveiorment.Add("SIT");
+                    NoHistoryEveiorment.Add("SIT2");
+
+                    int Count = 0; 
+
+                    while(Count < NoHistoryEveiorment.Count)
+                    {
+                        if (cbx_ENV.Text == NoHistoryEveiorment[Count])
+                        {
+                            activeMQ_HistoryTxtbx.Text = "No history enviorment for" + "" + ":"+ NoHistoryEveiorment[Count];
+
+                        }
+                        ++Count;
+                    }
+                    
+
+
+                }
+
+
+
+            }));
+        }
+
+
+
+
+
         public void UpdateUserInterface_history(bool result)
         {
             Dispatcher.BeginInvoke((Action)(() =>
@@ -221,9 +338,33 @@ namespace EDT
                 if (result == true)
                 {
                      History_UI_txtbx.Foreground = new SolidColorBrush(Colors.Green);
+                    History_UI_txtbx.Text = "History";
                 }
                 else
                 {
+
+                    History_UI_txtbx.Text = "History";
+                    List<string> NoHistoryEveiorment = new List<string>();
+                    NoHistoryEveiorment.Add("DEV2");
+                    NoHistoryEveiorment.Add("DEV3");
+                    NoHistoryEveiorment.Add("Pre-Prod");
+                    NoHistoryEveiorment.Add("SIT");
+                    NoHistoryEveiorment.Add("SIT2");
+
+                    int Count = 0;
+
+                    while (Count < NoHistoryEveiorment.Count)
+                    {
+                        if (cbx_ENV.Text == NoHistoryEveiorment[Count])
+                        {
+                            History_UI_txtbx.Text = "No history enviorment for" + "" + ":" + NoHistoryEveiorment[Count];
+
+                        }
+                   
+                        ++Count;
+
+
+                    }
                     History_UI_txtbx.Foreground = new SolidColorBrush(Colors.Red);
 
 
@@ -275,7 +416,18 @@ namespace EDT
         }
 
         private void Cbx_ENV_DropDownClosed(object sender, EventArgs e)
+
+
+
         {
+
+
+            if (cbx_ENV.Text.ToString() != null)
+            {
+                Validate.IsEnabled = true;
+            }
+
+
             if (cbx_ENV.Text.ToString() == "Production")
             {
                 List<string> logs_production = new List<string>();
@@ -332,6 +484,39 @@ namespace EDT
         {
             logLbx.ItemsSource = null;
             logLbxHist.ItemsSource = null;
+
+
+          
+
+        }
+
+        private void LogBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+          
+            
+                string server = logLbx.SelectedItem.ToString();
+                Process.Start(@"\\"+server);
+
+
+             
+        }
+
+        private void LogLbx_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (logLbx.SelectedItem.ToString() == "XE Servers:")
+            {
+                logBtn.IsEnabled = false;
+            }
+
+           else if (logLbx.SelectedItem.ToString() == "Service Manager:")
+            {
+                logBtn.IsEnabled = false;
+            }
+            else
+            {
+                logBtn.IsEnabled = true;
+            }
         }
     }
 

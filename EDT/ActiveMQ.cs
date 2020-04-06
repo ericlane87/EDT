@@ -27,9 +27,10 @@ namespace EDT
 
         public void SetPrimaryAQ_History()
         {
+            
             this.AQPrimary_Hist.Add("Production", "http://va22pwpegm001:8189/");
 
-            this.AQPrimary_Hist.Add("PRE-PROD", " NULL_preprod");
+            this.AQPrimary_Hist.Add("Pre-Prod", " NULL_preprod");
             this.AQPrimary_Hist.Add("UAT", " http://va22twvegm314:8161/ ");
             this.AQPrimary_Hist.Add("SIT2", " NULL_SIT2");
             this.AQPrimary_Hist.Add("SIT1", " NULL_SIT1");
@@ -45,7 +46,7 @@ namespace EDT
         public void SetSecoundaryAQ_History()
         {
             this.AQSecoundary_Hist.Add("Production", "NULL_Prod");
-            this.AQSecoundary_Hist.Add("PRE-PROD", "NULL_Preprod");
+            this.AQSecoundary_Hist.Add("Pre-Prod", "NULL_Preprod");
             this.AQSecoundary_Hist.Add("UAT", "http://va22twvegm316:8161/");
             this.AQSecoundary_Hist.Add("SIT2", "NULL_SIT2");
             this.AQSecoundary_Hist.Add("SIT", "NUL_SIT");
@@ -63,7 +64,7 @@ namespace EDT
         public void SetPrimaryAQ()
         {
             this.AQPrimary.Add("Production", "http://va22pwpegm400a.us.ad.wellpoint.com:8161");
-            this.AQPrimary.Add("PRE-PROD", "http://va22pwvegm300.corp.agp.ads:8161/ ");
+            this.AQPrimary.Add("Pre-Prod", "http://va22pwvegm300.corp.agp.ads:8161/ ");
             this.AQPrimary.Add("UAT", "http://va22pwpegm400a.us.ad.wellpoint.com:8161");
             this.AQPrimary.Add("SIT2", "http://va22twvegm311:8161/ ");
             this.AQPrimary.Add("SIT1", "http://va22twvegm300:8161/ ");
@@ -111,7 +112,7 @@ namespace EDT
         public void SetSecoundaryAQ()
         {
             this.AQSecoundary.Add("Production", "http://va22pwpegm400b.us.ad.wellpoint.com:8161/");
-            this.AQSecoundary.Add("PRE-PROD", "http://va22pwvegm301.corp.agp.ads:8161/ ");
+            this.AQSecoundary.Add("Pre-Prod", "http://va22pwvegm301.corp.agp.ads:8161/ ");
             this.AQSecoundary.Add("UAT", "http://va22twpegm400b:8161/");
             this.AQSecoundary.Add("SIT2", "https://va22twvegm312:8087/tm/ ");
             this.AQSecoundary.Add("SIT", "http://va22twvegm301:8161/ ");

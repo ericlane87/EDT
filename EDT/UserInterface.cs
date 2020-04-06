@@ -112,7 +112,7 @@ namespace EDT
         public void SetSecoundaryUI()
         {
             this.UISecoundary.Add("Production", "https://va22pwvegm308.corp.agp.ads:8087/tm/");
-            this.UISecoundary.Add("PRE-PROD", "https://va22pwvegm301.corp.agp.ads:8087/tm/ ");
+            this.UISecoundary.Add("Pre-Prod", "https://va22pwvegm301.corp.agp.ads:8087/tm/ ");
             this.UISecoundary.Add("UAT", "https://va22twvegm304:8087/tm/ ");
             this.UISecoundary.Add("SIT2", "https://va22twvegm312:8087/tm/");
             this.UISecoundary.Add("SIT1", "http://va22twvegm301:8161/");
