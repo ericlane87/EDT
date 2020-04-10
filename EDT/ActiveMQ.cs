@@ -69,7 +69,7 @@ namespace EDT
             this.AQPrimary.Add("SIT2", "http://va22twvegm311:8161/ ");
             this.AQPrimary.Add("SIT1", "http://va22twvegm300:8161/ ");
             this.AQPrimary.Add("DEV3", "http://va22dwvegm306:8161/");
-            this.AQPrimary.Add("DEV2", "http://va22dwvegm303:8161/ ");
+            this.AQPrimary.Add("DEV2", "http://va22dwvegm303:8161/");
             this.AQPrimary.Add("DEV1", "http://va22dwvegm300.corp.agp.ads:8161/ ");
 
 
@@ -115,7 +115,7 @@ namespace EDT
             this.AQSecoundary.Add("Pre-Prod", "http://va22pwvegm301.corp.agp.ads:8161/ ");
             this.AQSecoundary.Add("UAT", "http://va22twpegm400b:8161/");
             this.AQSecoundary.Add("SIT2", "https://va22twvegm312:8087/tm/ ");
-            this.AQSecoundary.Add("SIT", "http://va22twvegm301:8161/ ");
+            this.AQSecoundary.Add("SIT1", "http://va22twvegm301:8161/ ");
             this.AQSecoundary.Add("DEV3", "http://va22dwvegm307:8161/ ");
             this.AQSecoundary.Add("DEV2", "http://va22dwvegm304:8161/");
             this.AQSecoundary.Add("DEV1", "http://va22dwvegm301.corp.agp.ads:8161/ ");

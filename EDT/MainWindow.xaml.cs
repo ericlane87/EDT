@@ -30,13 +30,14 @@ namespace EDT
 
 
 
-
         }
 
-       
 
-    private void Validate_Click(object sender, RoutedEventArgs e)
+
+        private void Validate_Click(object sender, RoutedEventArgs e)
         {
+            Validate.IsEnabled = false;
+
             UserInterface UI_primary = new UserInterface();
             string Enviroment = cbx_ENV.Text;
             string PrimaryUI_Address = UI_primary.getPrimaryUI(Enviroment);
@@ -81,7 +82,22 @@ namespace EDT
             bool ActiveMQ = CheckUI(PrimaryAqAddress, SecoundaryAqAddress);
             bool ActivMQ_History = CheckUI(PrimaryAqAddress_History, SecoundaryAqAddress_History);
             CreatUIThread_ActiveMQ(ActiveMQ, ActivMQ_History);
+            DatamartValidation(env);
         }
+
+        public void DatamartValidation(string env)
+        {
+            Datamart DM = new Datamart();
+
+            string PrimaryAqAddress = DM.getPrimaryDM(env);
+            string SecoundaryAqAddress = DM.getSecoundaryDM(env);
+            string PrimaryDMAddress_History = DM.getPrimaryDM_History(env);
+            string SecoundaryDMAddress_History = DM.getSecoundaryDM_History(env);
+            bool ActiveMQ = CheckUI(PrimaryAqAddress, SecoundaryAqAddress);
+            bool ActivMQ_History = CheckUI(PrimaryDMAddress_History, SecoundaryDMAddress_History);
+            CreatUIThread_ActiveDM(ActiveMQ, ActivMQ_History);
+        }
+
 
         public bool CheckUI(string URL_prim, string URL_secound)
         {
@@ -157,6 +173,8 @@ namespace EDT
 
 
 
+
+
             catch (Exception ex)//If exception thrown then couldn't get response from address
             {
 
@@ -166,6 +184,51 @@ namespace EDT
 
 
         }
+
+
+
+
+
+
+
+
+        public void CreatUIThread_ActiveDM(bool processing, bool history)
+        {
+            try
+            {
+
+
+                {
+                    Thread thread = new Thread(delegate ()
+                    {
+                        updateUserInterface_ActiveDM(processing, history);
+                    });
+                    thread.IsBackground = true;
+                    thread.Start();
+
+                }
+            }
+
+
+            catch (Exception ex)//If exception thrown then couldn't get response from address
+            {
+
+                MessageBox.Show(ex.ToString());
+            }
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
         public void CreatUIThread_Processing(bool results)
         {
             try
@@ -270,15 +333,18 @@ namespace EDT
                     activeMQ_ProcessingTxtbx.Foreground = new SolidColorBrush(Colors.Green);
                     activeMQcbx.IsChecked = true;
 
+                    EnvLable.Content = "Current environment:" + "" + cbx_ENV.Text.ToString();
+                    EnvLable.Foreground = new SolidColorBrush(Colors.Black);
                 }
                 else
                 {
                     activeMQ_ProcessingTxtbx.Foreground = new SolidColorBrush(Colors.Red);
                     activeMQcbx.IsChecked = true;
 
+                    EnvLable.Content = "Current environment:" + "" + cbx_ENV.Text.ToString();
+                    EnvLable.Foreground = new SolidColorBrush(Colors.Black);
 
-                
-                    
+
 
                 }
 
@@ -286,7 +352,7 @@ namespace EDT
                 if (history == true)
                 {
                     activeMQ_HistoryTxtbx.Foreground = new SolidColorBrush(Colors.Green);
-                    UIChekbox.IsChecked = true;
+                    activeMQcbx.IsChecked = true;
 
                     activeMQ_HistoryTxtbx.Text = "History";
 
@@ -297,13 +363,13 @@ namespace EDT
 
 
                     activeMQ_HistoryTxtbx.Foreground = new SolidColorBrush(Colors.Red);
-                    UIChekbox.IsChecked = true;
+                    activeMQcbx.IsChecked = true;
 
                     List<string> NoHistoryEveiorment = new List<string>();
                     NoHistoryEveiorment.Add("DEV2");
                     NoHistoryEveiorment.Add("DEV3");
                     NoHistoryEveiorment.Add("Pre-Prod");
-                    NoHistoryEveiorment.Add("SIT");
+                    NoHistoryEveiorment.Add("SIT1");
                     NoHistoryEveiorment.Add("SIT2");
 
                     int Count = 0; 
@@ -330,6 +396,104 @@ namespace EDT
 
 
 
+        public void updateUserInterface_ActiveDM(bool processing, bool history)
+        {
+            Dispatcher.BeginInvoke((Action)(() =>
+            {
+                if (processing == true)
+                {
+                    DMProcessin.Foreground = new SolidColorBrush(Colors.Green);
+                    DMCKbx.IsChecked = true;
+                    DMProcessin.Text = "Processing";
+
+                    pbMain.IsIndeterminate = false;
+                }
+                else
+                {
+                    pbMain.IsIndeterminate = false;
+
+                    DMProcessin.Text = "Processing";
+
+                    DMProcessin.Foreground = new SolidColorBrush(Colors.Red);
+                    DMCKbx.IsChecked = true;
+
+                    List<string> NoDMEveiorment = new List<string>();
+
+                    NoDMEveiorment.Add("SIT2");
+
+                    int Count = 0;
+
+                    while (Count < NoDMEveiorment.Count)
+                    {
+                        if (cbx_ENV.Text == NoDMEveiorment[Count])
+                        {
+                            DMProcessin.Text = "No Datamart for" + "" + ":" + NoDMEveiorment[Count];
+
+                        }
+                        ++Count;
+                    }
+
+
+
+
+                }
+
+
+                if (history == true)
+                {
+                    DMHistory.Foreground = new SolidColorBrush(Colors.Green);
+                    DMCKbx.IsChecked = true;
+
+                    DMHistory.Text = "History";
+
+
+
+
+
+
+
+                }
+                else
+                {
+                    DMHistory.Text = "History";
+
+
+                    DMHistory.Foreground = new SolidColorBrush(Colors.Red);
+                    DMCKbx.IsChecked = true;
+
+                    List<string> NoHistoryEveiorment = new List<string>();
+                    NoHistoryEveiorment.Add("DEV2");
+                    NoHistoryEveiorment.Add("DEV3");
+                    NoHistoryEveiorment.Add("Pre-Prod");
+                    NoHistoryEveiorment.Add("SIT1");
+                    NoHistoryEveiorment.Add("SIT2");
+
+                    int Count = 0;
+
+                    while (Count < NoHistoryEveiorment.Count)
+                    {
+                        if (cbx_ENV.Text == NoHistoryEveiorment[Count])
+                        {
+                            DMHistory.Text = "No history enviorment for" + "" + ":" + NoHistoryEveiorment[Count];
+
+                        }
+                        ++Count;
+                    }
+
+
+
+                }
+
+
+
+            }));
+        }
+
+
+
+
+
+
 
         public void UpdateUserInterface_history(bool result)
         {
@@ -348,7 +512,7 @@ namespace EDT
                     NoHistoryEveiorment.Add("DEV2");
                     NoHistoryEveiorment.Add("DEV3");
                     NoHistoryEveiorment.Add("Pre-Prod");
-                    NoHistoryEveiorment.Add("SIT");
+                    NoHistoryEveiorment.Add("SIT1");
                     NoHistoryEveiorment.Add("SIT2");
 
                     int Count = 0;
@@ -464,26 +628,57 @@ namespace EDT
                 logs_PREPROD.Add("VA22PWVEGM304");
                 logs_PREPROD.Add("VA22PWVEGM305");
                 logs_PREPROD.Add("VA22PWVEGM306");
-
-
-
-
-
-
-
-
+                logs_PREPROD.Add("Service Manager:");
+                logs_PREPROD.Add("VA22PWVEGM302");
+                logs_PREPROD.Add("VA22PWVEGM303");
 
 
                 logLbx.ItemsSource = logs_PREPROD;
 
 
             }
+
+
+            if(cbx_ENV.Text.ToString() == "UAT")
+            {
+                List<string> logs_UAT = new List<string>();
+                logs_UAT.Add("XE Servers:");
+
+
+
+                logs_UAT.Add("VA22TWVEGM307");
+                logs_UAT.Add("VA22TWVEGM308");
+                logs_UAT.Add("VA22TWVEGM309");
+
+                logs_UAT.Add("Service Manager:");
+                logs_UAT.Add("VA22TWVEGM305");
+                logs_UAT.Add("VA22TWVEGM306");
+
+
+                List<string> logs_UATHistory = new List<string>();
+                logs_UATHistory.Add("XE Servers:");
+
+
+                logs_UATHistory.Add("VA22TWVEGM319");
+                logs_UATHistory.Add("VA22TWVEGM315");
+
+                logs_UATHistory.Add("Service Manager:");
+               logs_UATHistory.Add("VA22TWVEGM317");
+
+                logs_UATHistory.Add("VA22TWVEGM318");
+
+                logLbxHist.ItemsSource = logs_UATHistory;
+                logLbx.ItemsSource = logs_UATHistory;
+            }
+
+
+
         }
 
         private void Cbx_ENV_DropDownOpened(object sender, EventArgs e)
         {
-            logLbx.ItemsSource = null;
-            logLbxHist.ItemsSource = null;
+            //logLbx.ItemsSource = null;
+            //logLbxHist.ItemsSource = null;
 
 
           
@@ -493,30 +688,83 @@ namespace EDT
         private void LogBtn_Click(object sender, RoutedEventArgs e)
         {
 
-          
+            logBtn.IsEnabled = false;
             
                 string server = logLbx.SelectedItem.ToString();
-                Process.Start(@"\\"+server);
+                Process.Start(@"\\" + server);
+
+            
+         
 
 
-             
+
+
+
+
         }
 
         private void LogLbx_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (logLbx.SelectedItem.ToString() == "XE Servers:")
+            try
             {
-                logBtn.IsEnabled = false;
-            }
+                if (logLbx.SelectedItem.ToString() == null)
+                {
+                    return;
+                }
 
-           else if (logLbx.SelectedItem.ToString() == "Service Manager:")
-            {
-                logBtn.IsEnabled = false;
+                if (logLbx.SelectedItem.ToString() == "XE Servers:")
+                {
+                    logBtn.IsEnabled = false;
+
+                }
+
+                else if (logLbx.SelectedItem.ToString() == "Service Manager:")
+                {
+                    logBtn.IsEnabled = false;
+                }
+                else
+                {
+                    logBtn.IsEnabled = true;
+                }
             }
-            else
+            catch(Exception)
             {
-                logBtn.IsEnabled = true;
+                return;
             }
+        }
+
+        private void LogLbxHist_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            try
+            {
+                if (logLbxHist.SelectedItem.ToString() == "XE Servers:")
+                {
+                    logBtndelHistory.IsEnabled = false;
+
+                }
+
+                else if (logLbxHist.SelectedItem.ToString() == "Service Manager:")
+                {
+                    logBtndelHistory.IsEnabled = false;
+                }
+                else
+                {
+                    logBtndelHistory.IsEnabled = true;
+                }
+            }
+            catch(Exception)
+            {
+                return;
+            }
+        }
+
+        private void LogBtndelHistory_Click(object sender, RoutedEventArgs e)
+        {
+            logBtndelHistory.IsEnabled = false;
+
+            string server = logLbxHist.SelectedItem.ToString();
+            Process.Start(@"\\" + server);
         }
     }
 

@@ -68,14 +68,14 @@
             <TreeViewItem IsExpanded="True">
                 <TreeViewItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox x:Name="UICh" IsEnabled="False"/>
-                        <TextBlock  Text="Datamart MQ "  FontWeight="Bold"/>
+                        <CheckBox x:Name="DMCKbx" IsEnabled="False"/>
+                        <TextBlock x:Name="DMHeader" Text="Datamart MQ "  FontWeight="Bold"/>
                     </StackPanel>
                 </TreeViewItem.Header>
                 <TreeViewItem Margin="0,0,-0.333,0">
                     <TreeViewItem.Header>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock x:Name="Processin" Text="Processing" Foreground="Blue" />
+                            <TextBlock x:Name="DMProcessin" Text="Processing" Foreground="Blue" />
 
                         </StackPanel>
 
@@ -84,7 +84,7 @@
 
                 <TreeViewItem>
                     <TreeViewItem.Header>
-                        <TextBlock Text="History" Foreground="Blue" />
+                        <TextBlock Text="History" x:Name="DMHistory" Foreground="Blue" />
                     </TreeViewItem.Header>
                 </TreeViewItem>
             </TreeViewItem>
@@ -104,22 +104,42 @@
                 </TransformGroup>
             </ProgressBar.RenderTransform>
         </ProgressBar>
+        <Label Name="EnvLable" FontWeight="ExtraBlack" RenderTransformOrigin="-1.493,-4.567" Margin="30,287,121.333,58.667" Width="250" Height="75"></Label>
 
 
         <Grid Grid.ColumnSpan="2" Margin="0,0,0.333,-0.333">
-            <TabControl Margin="292,112,0,96.667" RenderTransformOrigin="0.37,0.509" HorizontalAlignment="Left" Width="177">
+            <TabControl Margin="292,112,0,53" RenderTransformOrigin="0.37,0.509" HorizontalAlignment="Left" Width="196">
                 <TabItem Header="Processing ">
-                    <ListBox RenderTransformOrigin="2.067,-0.56" Margin="10,21,10.333,19" Name="logLbx" SelectionChanged="LogLbx_SelectionChanged" />
-                </TabItem>
-                <TabItem Header="History " >
-                    <ListBox RenderTransformOrigin="2.067,-0.56" Margin="10,21,10.333,19" Name="logLbxHist"/>
+                    <Grid Margin="0,0,0,14.667">
+                        <ListBox RenderTransformOrigin="2.067,-0.56" Margin="10,21,10,0" Name="logLbx" SelectionChanged="LogLbx_SelectionChanged" Height="147" VerticalAlignment="Top" />
 
+                        <Button  Name="logBtn" IsEnabled="False" Content="View log"  RenderTransformOrigin="0.527,5.849" Click="LogBtn_Click" Margin="58,173,55,-0.333"></Button>
+
+
+
+                    </Grid>
+                </TabItem>
+                <TabItem Header="History " Width="76" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="33*"/>
+                            <ColumnDefinition Width="157*"/>
+                        </Grid.ColumnDefinitions>
+                        <ListBox RenderTransformOrigin="2.067,-0.56" Margin="10,10,10,46" Name="logLbxHist" SelectionChanged="LogLbxHist_SelectionChanged" Grid.ColumnSpan="2" />
+
+                        <Button Name="logBtndelHistory" IsEnabled="False" Width="76" Content="View log" RenderTransformOrigin="0.527,5.849" Click="LogBtndelHistory_Click" Grid.Column="1" Height="41" Margin="22.333,0,59,0" VerticalAlignment="Bottom"/>
+
+
+                    </Grid>
                 </TabItem>
             </TabControl>
+
+
+
+
         </Grid>
 
 
-        <Button Name="logBtn" IsEnabled="False" Content="View log" Margin="352,334,91.333,56.667" RenderTransformOrigin="0.527,5.849" Grid.ColumnSpan="2" Click="LogBtn_Click"/>
 
 
     </Grid>
